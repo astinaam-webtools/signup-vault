@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Settings as SettingsIcon, ShieldCheck, Database, ServerCog, MoonStar } from "lucide-react"
+import dynamic from "next/dynamic"
+
+const ChangePasswordForm = dynamic(() => import("./change-password"), { ssr: false })
 
 interface Settings {
   allowUserRegistration: boolean
@@ -155,6 +158,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       </div>
+      <ChangePasswordForm />
     </div>
   )
 }

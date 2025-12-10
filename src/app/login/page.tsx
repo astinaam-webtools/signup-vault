@@ -149,7 +149,9 @@ function LoginForm() {
             </form>
           </Form>
 
-          {/* <p className="mt-4 text-xs text-muted-foreground"></p> */}
+          <div className="mt-4 text-xs text-muted-foreground text-center">
+            <a href="/login/reset" className="text-primary underline hover:opacity-80">Forgot password?</a>
+          </div>
         </div>
       </div>
     </div>

@@ -20,6 +20,8 @@ API: A project-scoped public email collection API endpoint has been added at `sr
 
 Auth: Credentials sign-in now normalizes emails (trim + lowercase) and user creation stores normalized emails to avoid case/whitespace login mismatches.
 
+Passwords: Added reset + change password flows with tokenized reset links delivered via Resend (configurable with RESEND_API_KEY/RESEND_FROM). API handlers live under `src/app/api/auth/reset/*/route.ts` and `src/app/api/auth/change-password/route.ts`, storing reset tokens/expiry on the user record.
+
 Docker: Multi-stage Docker build implemented with Node.js 20 Alpine, standalone Next.js output, health check endpoint at `/api/health`, and comprehensive container testing. Ready for Coolify deployment.
 ---
 
@@ -42,6 +44,7 @@ Update (December 10, 2025): Implemented task 10 — Coolify deployment configura
 Update (December 11, 2025): Refreshed homepage, login, and dashboard UI with token-driven gradients and glass cards that respect system light/dark preference; homepage shows Login CTA for unauthenticated visitors. Extended the same treatment to dashboard subpages (projects, project detail, project create/edit, users, settings) for consistent themed visuals.
 Update (December 11, 2025): Adjusted dashboard settings/projects/users pages (including project detail/new) to remove max-width constraints so content uses the full available width alongside the sidebar layout.
 Update (December 11, 2025): Normalized credential email handling (trim + lowercase) in auth and user creation to allow case-insensitive login for non-admin users.
+Update (December 11, 2025): Implemented password reset/change flows with Prisma fields (resetToken/resetTokenExpiry), Resend-powered reset emails (graceful no-op without API key), and redesigned reset/change UI to match the gradient/glass aesthetic. Added API handlers under App Router route conventions.
 ---
 
 ## Context Management
