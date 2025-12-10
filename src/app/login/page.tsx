@@ -42,6 +42,7 @@ function LoginForm() {
         password: data.password,
         redirect: false,
       })
+      console.log("Sign in result:", result)
 
       if (result?.error) {
         setError("Invalid credentials")

@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
+import { normalizeEmail } from "@/lib/auth-helpers"
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -50,9 +51,11 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { email, password, role } = createUserSchema.parse(body)
 
+    const normalizedEmail = normalizeEmail(email)
+
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     })
 
     if (existingUser) {
@@ -63,7 +66,7 @@ export async function POST(req: Request) {
 
     const user = await prisma.user.create({
       data: {
-        email,
+        email: normalizedEmail,
         password: hashedPassword,
         role,
       },

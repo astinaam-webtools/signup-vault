@@ -18,6 +18,8 @@ Dashboard pages (settings, projects list/detail/new, users) now span the full co
 
 API: A project-scoped public email collection API endpoint has been added at `src/app/api/public/collect/[projectId]/route.ts`. It accepts POST submissions with an `x-api-key` header, extracts IP/country/user-agent headers, enforces an in-memory rate limit for development, and persists submissions to the database.
 
+Auth: Credentials sign-in now normalizes emails (trim + lowercase) and user creation stores normalized emails to avoid case/whitespace login mismatches.
+
 Docker: Multi-stage Docker build implemented with Node.js 20 Alpine, standalone Next.js output, health check endpoint at `/api/health`, and comprehensive container testing. Ready for Coolify deployment.
 ---
 
@@ -39,6 +41,7 @@ Update (December 10, 2025): Implemented task 10 — Coolify deployment configura
 
 Update (December 11, 2025): Refreshed homepage, login, and dashboard UI with token-driven gradients and glass cards that respect system light/dark preference; homepage shows Login CTA for unauthenticated visitors. Extended the same treatment to dashboard subpages (projects, project detail, project create/edit, users, settings) for consistent themed visuals.
 Update (December 11, 2025): Adjusted dashboard settings/projects/users pages (including project detail/new) to remove max-width constraints so content uses the full available width alongside the sidebar layout.
+Update (December 11, 2025): Normalized credential email handling (trim + lowercase) in auth and user creation to allow case-insensitive login for non-admin users.
 ---
 
 ## Context Management
