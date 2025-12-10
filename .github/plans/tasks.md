@@ -33,7 +33,9 @@ Based on the initial plan in `initial-plan.md`.
 
 	Implemented: Configured Vitest with jsdom environment and React plugin, set up Playwright with Chromium/Firefox/Webkit browsers, created database seeding helpers and auth mocking utilities, wrote unit tests for API routes (collect endpoint) and components (Button), created E2E test suites for authentication and project management. Note: E2E tests require proper test database setup and system dependencies for full execution.
 
-- [ ] 10. **Configure Coolify deployment** - Create [`Dockerfile`] with multi-stage build (dependencies → build → production), add [`docker-compose.yml`] for local development with PostgreSQL service, create [`.dockerignore`], set up health check endpoint at [`app/api/health/route.ts`], document environment variables in [`README.md`] (DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL, NODE_ENV).
+- [x] 10. **Configure Coolify deployment** - Create [`Dockerfile`] with multi-stage build (dependencies → build → production), add [`docker-compose.yml`] for local development with PostgreSQL service, create [`.dockerignore`], set up health check endpoint at [`app/api/health/route.ts`], document environment variables in [`README.md`] (DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL, NODE_ENV).
+
+	Implemented: Created multi-stage Dockerfile with Node.js 20 Alpine, configured Next.js standalone output, added docker-compose.yml with PostgreSQL service and health checks, created .dockerignore to optimize build context, implemented health check endpoint with database connectivity testing, updated README.md with comprehensive documentation including environment variables, deployment instructions, and API documentation.
 
 - [ ] 11. **Add advanced features and polish** - Implement webhook notifications for new email submissions in [`app/api/webhooks/route.ts`], add email validation with DNS MX record checking, create API rate limiting with different tiers per project, add dark mode toggle using next-themes, implement search across all emails (admin view), add audit logs for user actions, create API documentation page at [`app/docs/page.tsx`].
 

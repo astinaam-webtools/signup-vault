@@ -1,36 +1,231 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SignupVault
 
-## Getting Started
+A modern, full-stack email collection SaaS platform with multi-tenant project support, admin dashboard, analytics, and public API. Built with Next.js 15, TypeScript, PostgreSQL, Prisma, tRPC, Tailwind CSS, and Shadcn/UI.
 
-First, run the development server:
+## Features
+
+- 🔐 **Authentication**: Secure login system with role-based access control (Admin/User)
+- 📊 **Admin Dashboard**: Comprehensive dashboard with analytics and project management
+- 📧 **Email Collection**: Public API endpoints for collecting emails with metadata
+- 🏗️ **Multi-tenant**: Project-scoped email collection with unique API keys
+- 📈 **Analytics**: Real-time email collection analytics and trends
+- 📤 **Export**: CSV export functionality for email lists
+- 🌐 **API**: RESTful API with rate limiting and CORS support
+- 🐳 **Docker**: Containerized deployment ready for Coolify
+
+## Tech Stack
+
+- **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS, Shadcn/UI
+- **Backend**: Next.js API Routes, tRPC, NextAuth.js v5
+- **Database**: PostgreSQL with Prisma ORM
+- **Deployment**: Docker, Coolify optimized
+- **Testing**: Vitest (unit), Playwright (E2E)
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 20+
+- Docker and Docker Compose
+- PostgreSQL (or use Docker)
+
+### Local Development
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd signupvault
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit `.env` with your configuration:
+   ```env
+   DATABASE_URL="postgresql://postgres:postgres#123#@localhost:5433/signupvault"
+   NEXTAUTH_SECRET="your-super-secret-key-change-in-production"
+   NEXTAUTH_URL="http://localhost:3000"
+   NODE_ENV="development"
+   ```
+
+4. **Start PostgreSQL with Docker**
+   ```bash
+   docker run -d \
+     --name signupvault-db \
+     -e POSTGRES_DB=signupvault \
+     -e POSTGRES_USER=postgres \
+     -e POSTGRES_PASSWORD=postgres#123# \
+     -p 5433:5432 \
+     postgres:15-alpine
+   ```
+
+5. **Run database migrations**
+   ```bash
+   npx prisma migrate dev --name init
+   ```
+
+6. **Seed admin user**
+   ```bash
+   npx tsx scripts/seed-admin.ts
+   ```
+
+7. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+8. **Open [http://localhost:3000](http://localhost:3000)**
+
+### Using Docker Compose (Recommended)
+
+For a complete development environment:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker-compose up -d
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will start both the PostgreSQL database and the Next.js application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `DATABASE_URL` | PostgreSQL connection string | Yes | - |
+| `NEXTAUTH_SECRET` | Secret key for NextAuth.js | Yes | - |
+| `NEXTAUTH_URL` | Base URL for authentication | Yes | - |
+| `NODE_ENV` | Environment mode | No | `development` |
 
-## Learn More
+### Database URL Format
 
-To learn more about Next.js, take a look at the following resources:
+```
+postgresql://username:password@host:port/database
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For local development with Docker:
+```
+postgresql://postgres:postgres%23123%23@localhost:5433/signupvault
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Documentation
 
-## Deploy on Vercel
+### Public Email Collection
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Collect emails for a specific project:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+POST /api/public/collect/{projectId}
+Content-Type: application/json
+x-api-key: your-project-api-key
+
+{
+  "email": "user@example.com",
+  "metadata": {
+    "source": "website",
+    "campaign": "newsletter"
+  }
+}
+```
+
+**Rate Limiting**: 100 requests per hour per IP address.
+
+### Health Check
+
+```bash
+GET /api/health
+```
+
+Returns service health status including database connectivity.
+
+## Project Structure
+
+```
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/               # API routes
+│   │   ├── dashboard/         # Admin dashboard
+│   │   └── login/             # Authentication
+│   ├── components/            # React components
+│   ├── lib/                   # Utilities and configurations
+│   └── types/                 # TypeScript types
+├── prisma/
+│   ├── schema.prisma          # Database schema
+│   └── migrations/            # Database migrations
+├── e2e/                       # End-to-end tests
+├── __tests__/                 # Unit tests
+└── scripts/                   # Database seeding scripts
+```
+
+## Testing
+
+### Unit Tests
+
+```bash
+npm run test:run
+```
+
+### E2E Tests
+
+```bash
+npm run test:e2e
+```
+
+### Coverage Report
+
+```bash
+npm run test:coverage
+```
+
+## Deployment
+
+### Coolify Deployment
+
+1. **Connect your repository** to Coolify
+2. **Set environment variables** in Coolify dashboard
+3. **Configure the service**:
+   - Build Command: `npm run build`
+   - Start Command: `npm start`
+   - Health Check Path: `/api/health`
+4. **Deploy**
+
+### Manual Docker Deployment
+
+```bash
+# Build the image
+docker build -t signupvault .
+
+# Run with PostgreSQL
+docker-compose up -d
+```
+
+## Database Schema
+
+### Models
+
+- **User**: Authentication and role management
+- **Project**: Multi-tenant project isolation
+- **EmailSubmission**: Collected emails with metadata
+- **Settings**: Global application configuration
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Ensure all tests pass
+6. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For questions or issues, please open an issue on GitHub.
