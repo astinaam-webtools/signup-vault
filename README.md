@@ -2,6 +2,10 @@
 
 A modern, full-stack email collection SaaS platform with multi-tenant project support, admin dashboard, analytics, and public API. Built with Next.js 15, TypeScript, PostgreSQL, Prisma, tRPC, Tailwind CSS, and Shadcn/UI.
 
+**Containerized for Coolify and Docker deployments. Now includes curl in the Docker image for health checks and debugging.**
+
+Health check endpoint: `/api/health` returns JSON with service health status and database connectivity. Docker image exposes port 3000 and includes curl for container diagnostics.
+
 ## Features
 
 - 🔐 **Authentication**: Secure login system with role-based access control (Admin/User)
@@ -91,6 +95,10 @@ For a complete development environment:
 docker-compose up -d
 ```
 
+#### Docker Image Notes
+The Dockerfile installs curl for health checks and debugging. You can use curl inside the running container to test endpoints:
+`docker exec -it <container_name> curl http://localhost:3000/api/health`
+
 This will start both the PostgreSQL database and the Next.js application.
 
 ## Environment Variables
@@ -141,7 +149,17 @@ x-api-key: your-project-api-key
 GET /api/health
 ```
 
-Returns service health status including database connectivity.
+Returns JSON with service health status and database connectivity. Example response:
+
+```json
+{
+   "status": "healthy",
+   "timestamp": "2025-12-11T12:34:56.789Z",
+   "services": {
+      "database": "connected"
+   }
+}
+```
 
 ## Project Structure
 
@@ -194,6 +212,10 @@ npm run test:coverage
    - Health Check Path: `/api/health`
 4. **Deploy**
 
+#### Docker Health Check
+You can use curl inside the container to verify health:
+`curl http://localhost:3000/api/health`
+
 ### Manual Docker Deployment
 
 ```bash
@@ -229,3 +251,8 @@ This project is licensed under the MIT License.
 ## Support
 
 For questions or issues, please open an issue on GitHub.
+
+---
+**Latest updates:**
+- Health check endpoint `/api/health` implemented and documented
+- Dockerfile now installs curl for diagnostics
