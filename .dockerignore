@@ -1,3 +1,7 @@
+
+!prisma/
+!prisma.config.ts
+
 # Dependencies
 node_modules
 npm-debug.log*

@@ -61,6 +61,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modul
 # This copies the schema.prisma file and the migrations folder
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
+# Copy the config file so Prisma knows where the database is!
+COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
+
 USER nextjs
 
 EXPOSE 3000
