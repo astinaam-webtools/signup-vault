@@ -109,7 +109,7 @@ function LoginForm() {
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="admin@signupvault.com"
+                        placeholder="Enter your email"
                         className="border-border bg-card text-foreground placeholder:text-muted-foreground"
                         {...field}
                       />
@@ -127,7 +127,7 @@ function LoginForm() {
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="••••••••"
+                        placeholder=""
                         className="border-border bg-card text-foreground placeholder:text-muted-foreground"
                         {...field}
                       />
@@ -149,7 +149,7 @@ function LoginForm() {
             </form>
           </Form>
 
-          <p className="mt-4 text-xs text-muted-foreground">Use the seeded admin: admin@signupvault.com / admin123</p>
+          {/* <p className="mt-4 text-xs text-muted-foreground"></p> */}
         </div>
       </div>
     </div>
