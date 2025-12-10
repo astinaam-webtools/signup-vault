@@ -1,7 +1,8 @@
 "use client"
 
+import { useEffect } from "react"
 import { useSession, signOut } from "next-auth/react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import {
   Sidebar,
@@ -25,7 +26,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
 import { User, LogOut, Home, FolderOpen, Users, Settings } from "lucide-react"
 
 const navigation = [
@@ -40,14 +40,34 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const pathname = usePathname()
 
   const isAdmin = session?.user?.role === "ADMIN"
 
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      const from = pathname || "/dashboard"
+      router.replace(`/login?from=${encodeURIComponent(from)}`)
+    }
+  }, [status, router, pathname])
+
+  if (status === "loading") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
+        <div className="animate-pulse text-sm text-muted-foreground">Loading dashboard…</div>
+      </div>
+    )
+  }
+
+  if (status === "unauthenticated") {
+    return null
+  }
+
   return (
     <SidebarProvider>
-      <div className="flex h-screen">
+      <div className="flex w-full min-h-screen bg-background">
         <Sidebar>
           <SidebarHeader>
             <div className="flex items-center gap-2 px-4 py-2">
@@ -99,7 +119,7 @@ export default function DashboardLayout({
             </SidebarMenu>
           </SidebarFooter>
         </Sidebar>
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto bg-background">
           <header className="flex items-center gap-4 border-b px-6 py-4">
             <SidebarTrigger />
             <h2 className="text-xl font-semibold">

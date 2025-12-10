@@ -12,6 +12,10 @@ The project is SignupVault, a full-stack email collection SaaS platform with mul
 
 Note: The UI now supports both light and dark color schemes based on the user's OS-level preference (prefers-color-scheme) — variables are applied through CSS to respect system theme automatically.
 
+Homepage, login, and dashboard surfaces have been refreshed with gradient layers and glassy cards that use design tokens (background/card/foreground) so they adapt cleanly to light/dark system themes, including a visible Login CTA for signed-out users.
+Dashboard subpages (projects list/detail, project create/edit, users, settings) now use the same theme-aware gradients and glass cards to reduce whiteness and keep consistency across light/dark modes.
+Dashboard pages (settings, projects list/detail/new, users) now span the full content width (no max-width containers) to match the main dashboard surface.
+
 API: A project-scoped public email collection API endpoint has been added at `src/app/api/public/collect/[projectId]/route.ts`. It accepts POST submissions with an `x-api-key` header, extracts IP/country/user-agent headers, enforces an in-memory rate limit for development, and persists submissions to the database.
 
 Docker: Multi-stage Docker build implemented with Node.js 20 Alpine, standalone Next.js output, health check endpoint at `/api/health`, and comprehensive container testing. Ready for Coolify deployment.
@@ -32,6 +36,9 @@ Additionally, basic system-level theme support was added: the app respects the u
 The landing page now includes a simple email signup form (client-side validation + API endpoint) for early access. A small visual tweak was applied to make the default light background less bright and easier on the eyes.
 
 Update (December 10, 2025): Implemented task 10 — Coolify deployment configuration. Created multi-stage Dockerfile with Node.js 20 Alpine base image and standalone Next.js output, configured docker-compose.yml for local development with PostgreSQL service including health checks, created .dockerignore for optimized build context, implemented health check endpoint at /api/health with database connectivity testing, and updated README.md with comprehensive documentation covering environment variables, deployment instructions, API documentation, and project architecture overview.
+
+Update (December 11, 2025): Refreshed homepage, login, and dashboard UI with token-driven gradients and glass cards that respect system light/dark preference; homepage shows Login CTA for unauthenticated visitors. Extended the same treatment to dashboard subpages (projects, project detail, project create/edit, users, settings) for consistent themed visuals.
+Update (December 11, 2025): Adjusted dashboard settings/projects/users pages (including project detail/new) to remove max-width constraints so content uses the full available width alongside the sidebar layout.
 ---
 
 ## Context Management
