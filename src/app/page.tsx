@@ -1,74 +1,133 @@
-import Image from "next/image";
+import Link from "next/link"
+import { ArrowRight, LogIn } from "lucide-react"
 import LandingSignup from "@/components/landing-signup"
+import { auth } from "@/lib/auth"
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            Signup for early access — it takes two seconds
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            I'm building SignupVault to make collecting emails easier — leave your
-            email below and I'll keep you posted. No spam.
-          </p>
-          <div className="mt-2 w-full flex justify-center sm:justify-start">
-            <LandingSignup />
+    <div className="relative isolate min-h-screen overflow-hidden bg-background px-6 py-10 text-foreground sm:px-10">
+      <div
+        className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.14),transparent_32%),radial-gradient(circle_at_85%_18%,rgba(14,165,233,0.16),transparent_30%),radial-gradient(circle_at_28%_80%,rgba(248,180,0,0.12),transparent_28%)]"
+        aria-hidden
+      />
+      <div
+        className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,rgba(10,15,28,0.18)_0%,rgba(8,12,22,0.08)_55%,rgba(255,255,255,0.12)_100%)] mix-blend-multiply"
+        aria-hidden
+      />
+      <div className="absolute inset-0 -z-10 mix-blend-overlay bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),transparent_52%)]" aria-hidden />
+
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/80 px-4 py-3 shadow-lg shadow-black/10 backdrop-blur-lg">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-emerald-400/80 to-sky-400/80 text-sm font-semibold text-black shadow-lg shadow-emerald-500/30">
+            SV
           </div>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Need resources instead? Check
-            these:
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+          <div>
+            <p className="text-sm text-foreground/80">SignupVault</p>
+            <p className="text-xs text-foreground/60">Multi-tenant email collection</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 text-sm">
+          {!session && (
+            <Link
+              href="/login"
+              className="group inline-flex items-center gap-2 rounded-full border border-border/70 px-4 py-2 text-foreground/80 transition hover:border-foreground/40 hover:text-foreground"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <LogIn size={16} className="text-emerald-200" />
+              Login
+              <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
+            </Link>
+          )}
+          {session && (
+            <Link
+              href="/dashboard"
+              className="group inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md shadow-emerald-400/25 transition hover:shadow-lg hover:shadow-emerald-400/35"
             >
-              Learning
-            </a>{" "}
-            center.
+              Open dashboard
+              <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
+            </Link>
+          )}
+        </div>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-6xl flex-col items-center gap-12 pt-14 lg:flex-row lg:items-start lg:gap-14">
+        <section className="max-w-2xl space-y-6 text-foreground">
+          <p className="inline-flex items-center gap-2 rounded-full border border-emerald-200/40 bg-emerald-500/10 px-3 py-1 text-sm text-emerald-900 shadow-inner shadow-emerald-500/20">
+            Designed for shipping fast
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+          <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+            Collect emails, segment audiences, and ship campaigns without plumbing.
+          </h1>
+          <p className="text-lg text-foreground/70">
+            SignupVault is a multi-tenant email collection platform with project-scoped APIs, rate-limited capture, and an admin dashboard that respects your system theme out of the box.
+          </p>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+            <div className="w-full sm:w-auto">
+              <LandingSignup />
+            </div>
+            <div className="text-sm text-foreground/60 sm:max-w-xs">
+              No spam, just product updates and patterns on how we run high-converting capture forms.
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
+            <div className="rounded-xl border border-border/70 bg-card/80 p-4 shadow-md shadow-black/10">
+              <p className="text-foreground">Project-scoped API keys</p>
+              <p className="text-muted-foreground">Per-project keys with IP, UA, and country capture.</p>
+            </div>
+            <div className="rounded-xl border border-border/70 bg-card/80 p-4 shadow-md shadow-black/10">
+              <p className="text-foreground">Analytics-ready</p>
+              <p className="text-muted-foreground">Events flow straight into PostgreSQL for dashboards.</p>
+            </div>
+            <div className="rounded-xl border border-border/70 bg-card/80 p-4 shadow-md shadow-black/10">
+              <p className="text-foreground">Coolify-ready</p>
+              <p className="text-muted-foreground">Docker build tuned for fast deploys.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full max-w-md rounded-2xl border border-border/70 bg-card/80 p-6 text-foreground shadow-2xl shadow-emerald-500/15 backdrop-blur-xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Live preview</p>
+              <p className="mt-1 text-2xl font-semibold">Inbox-ready captures</p>
+            </div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-foreground/80">API</div>
+          </div>
+          <div className="mt-6 space-y-4 rounded-xl border border-border/70 bg-background/60 p-5 shadow-inner shadow-black/10">
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <span className="flex items-center gap-2 text-foreground">
+                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                Rate limit
+              </span>
+              <span className="rounded-full bg-primary/10 px-3 py-1 text-xs text-foreground">Enabled</span>
+            </div>
+            <div className="rounded-lg border border-border/70 bg-card/70 p-4 text-xs text-muted-foreground">
+              <p className="font-mono text-foreground">POST /api/public/collect/:projectId</p>
+              <p className="mt-2 font-mono">x-api-key: sk_live_***</p>
+              <p className="font-mono">body: &#123; email, ip, country, ua &#125;</p>
+            </div>
+            <div className="grid grid-cols-3 gap-3 text-xs">
+              <div className="rounded-lg border border-border/70 bg-card/80 p-3 text-center">
+                <p className="text-lg font-semibold text-foreground">64%</p>
+                <p className="text-muted-foreground">open rate</p>
+              </div>
+              <div className="rounded-lg border border-border/70 bg-card/80 p-3 text-center">
+                <p className="text-lg font-semibold text-foreground">2.3k</p>
+                <p className="text-muted-foreground">contacts</p>
+              </div>
+              <div className="rounded-lg border border-border/70 bg-card/80 p-3 text-center">
+                <p className="text-lg font-semibold text-foreground">99.9%</p>
+                <p className="text-muted-foreground">uptime</p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 flex items-center justify-between text-sm text-muted-foreground">
+            <span>Export to CSV or plug into your ESP.</span>
+            <ArrowRight size={16} className="text-emerald-500" />
+          </div>
+        </section>
       </main>
     </div>
-  );
+  )
 }
