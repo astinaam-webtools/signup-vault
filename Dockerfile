@@ -1,5 +1,6 @@
-# Use Node.js 20 Alpine as base image for smaller size
 FROM node:20-alpine AS base
+# Install curl for health checks and debugging
+RUN apk add --no-cache curl
 
 # Install dependencies only when needed
 FROM base AS deps
